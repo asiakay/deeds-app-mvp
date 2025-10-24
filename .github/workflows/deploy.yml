@@ -1,13 +1,13 @@
-name: First Deploy - Deeds App
+name: First Deploy - Deeds App MVP
 
 on:
-  workflow_dispatch:     # You can trigger it manually the first time
+  workflow_dispatch:
   push:
     branches:
       - main
 
 jobs:
-  first-deploy:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,8 +26,8 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
         run: |
-          echo "Checking API access..."
-          wrangler whoami || (echo "⚠️ Cloudflare token not valid" && exit 1)
+          echo "Checking Cloudflare credentials..."
+          wrangler whoami || (echo "⚠️ Invalid Cloudflare token" && exit 1)
 
       - name: Ensure KV Namespace exists
         env:
@@ -39,9 +39,11 @@ jobs:
       - name: Deploy to Cloudflare Workers
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
-        run: npx wrangler publish
+        run: |
+          echo "🚀 Deploying Deeds App MVP..."
+          wrangler deploy
 
       - name: Confirm Deployment
         run: |
           echo "Testing deployment..."
-          curl -s -o /dev/null -w "%{http_code}" https://deeds-app-mvp.asialakaygrady-6d4.workers.dev | grep 200 && echo "✅ Deployed successfully!" || echo "⚠️ Deployment might need manual check."
+          curl -s -o /dev/null -w "%{http_code}" https://deeds-app-mvp.asialakaygrady-6d4.workers.dev | grep 200 && echo "✅ Deployment successful!" || echo "⚠️ Check Cloudflare dashboard manually."
