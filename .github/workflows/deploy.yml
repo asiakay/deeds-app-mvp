@@ -1,4 +1,4 @@
-name: First Deploy - Deeds App MVP
+name: First Deploy - Deeds App
 
 on:
   workflow_dispatch:
@@ -36,7 +36,7 @@ jobs:
           echo "Ensuring KV namespace..."
           npx wrangler kv namespace list | grep DEEDS_KV || npx wrangler kv namespace create "DEEDS_KV"
 
-      - name: Deploy to Cloudflare Workers (Deeds App MVP)
+      - name: Deploy to Cloudflare Workers (Deeds App)
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
         run: |
@@ -47,4 +47,4 @@ jobs:
       - name: Confirm Deployment
         run: |
           echo "Testing deployment..."
-          curl -s -o /dev/null -w "%{http_code}" https://deeds-app-mvp.asialakaygrady-6d4.workers.dev | grep 200 && echo "✅ Deployment successful!" || echo "⚠️ Check Cloudflare dashboard manually."
+          curl -s -o /dev/null -w "%{http_code}" https://deeds-app.asialakaygrady-6d4.workers.dev | grep 200 && echo "✅ Deployment successful!" || echo "⚠️ Check Cloudflare dashboard manually."
