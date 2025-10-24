@@ -34,7 +34,7 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
         run: |
           echo "🚀 Deploying Deeds App MVP..."
-          wrangler deploy --name deeds-app-mvp
+          npx wrangler deploy --name deeds-app-mvp
 
       - name: Confirm Deployment
         run: |
