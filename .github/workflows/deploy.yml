@@ -29,6 +29,13 @@ jobs:
           echo "Checking Cloudflare credentials..."
           wrangler whoami || (echo "⚠️ Invalid Cloudflare token" && exit 1)
 
+      - name: Ensure KV Namespace exists
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+        run: |
+          echo "Ensuring KV namespace..."
+          npx wrangler kv namespace list | grep DEEDS_KV || npx wrangler kv namespace create "DEEDS_KV"
+
       - name: Deploy to Cloudflare Workers (Deeds App MVP)
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
