@@ -1,5 +1,5 @@
 export default {
-  async fetch(request, env, ctx) {
-    return new Response("Deeds app is alive ✅", { status: 200 });
-  },
-};
+  async fetch(req) {
+    return new Response("Deeds App worker running ✅", { status: 200 });
+  }
+}
