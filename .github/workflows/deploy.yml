@@ -44,4 +44,4 @@ jobs:
       - name: Confirm Deployment
         run: |
           echo "Testing deployment..."
-          curl -s -o /dev/null -w "%{http_code}" https://deeds-app.asialakaygrady-6d4.workers.dev | grep 200 && echo "✅ Deployed successfully!" || echo "⚠️ Deployment might need manual check."
+          curl -s -o /dev/null -w "%{http_code}" https://deeds-app-mvp.asialakaygrady-6d4.workers.dev | grep 200 && echo "✅ Deployed successfully!" || echo "⚠️ Deployment might need manual check."
