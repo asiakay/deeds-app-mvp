@@ -1,13 +1,15 @@
-name: Deploy Deeds App
+name: First Deploy - Deeds App
+
 on:
+  workflow_dispatch:     # You can trigger it manually the first time
   push:
     branches:
       - main
-  workflow_dispatch:   # lets you trigger manually from dashboard
 
 jobs:
-  deploy:
+  first-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -20,7 +22,26 @@ jobs:
       - name: Install Wrangler
         run: npm install -g wrangler
 
-      - name: Publish to Cloudflare Workers
+      - name: Verify Cloudflare API token
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+        run: |
+          echo "Checking API access..."
+          wrangler whoami || (echo "⚠️ Cloudflare token not valid" && exit 1)
+
+      - name: Ensure KV Namespace exists
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+        run: |
+          echo "Ensuring KV namespace..."
+          wrangler kv:namespace list | grep DEEDS_KV || wrangler kv:namespace create DEEDS_KV
+
+      - name: Deploy to Cloudflare Workers
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
         run: wrangler publish
+
+      - name: Confirm Deployment
+        run: |
+          echo "Testing deployment..."
+          curl -s -o /dev/null -w "%{http_code}" https://deeds-app.asialakaygrady-6d4.workers.dev | grep 200 && echo "✅ Deployed successfully!" || echo "⚠️ Deployment might need manual check."
