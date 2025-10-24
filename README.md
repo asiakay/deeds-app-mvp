@@ -90,8 +90,11 @@ deeds-app/
 
 ## 🧩 Testing
 To confirm KV access:
+
 ```
-https://<your-worker>.workers.dev/test
+- https://deeds-app.asialakaygrady-6d4.workers.dev/test
+- https://deeds-app-mvp.asialakaygrady-6d4.workers.dev/test
+
 ```
 Should return:
 ```
