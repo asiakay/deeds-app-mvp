@@ -1,4 +1,4 @@
-name = "deeds-app-mvp"
+name = "deeds-app"
 main = "functions/_worker.js"
 compatibility_date = "2025-10-23"
 
